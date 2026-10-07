@@ -3,12 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       sha: { required: true }
+      state: { default: success }
 permissions:
   statuses: write
 jobs:
   post:
     runs-on: ubuntu-latest
     steps:
-      - run: gh api repos/${{ github.repository }}/statuses/${{ inputs.sha }} -f state=success -f context=pr-review-gate -f description="posted by GITHUB_TOKEN (app 15368)"
+      - run: gh api repos/${{ github.repository }}/statuses/${{ inputs.sha }} -f state=${{ inputs.state }} -f context=pr-review-gate -f description="posted by GITHUB_TOKEN (app 15368)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
